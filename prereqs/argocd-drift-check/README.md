@@ -4,9 +4,9 @@ The `argocd-drift-check-pass` and `argocd-drift-check-blocked` Stages in `custom
 creates them: [argocd/apps/prereqs-argocd-drift-check.yaml](../../argocd/apps/prereqs-argocd-drift-check.yaml) syncs
 [applications.yaml](applications.yaml) into Argo CD. Nothing to apply by hand.
 
-They must be in the Argo CD that the `custom-steps` shard's promotion pods reach through the `access-argocd` capability
+They must be in the Argo CD that the `self-hosted` shard's promotion pods reach through the `access-argocd` capability
 (the Argo CD integrated with that Kargo agent). Their workloads deploy to the cluster registered in Argo CD as
-`custom-steps-agent`.
+`kargo-quickstart`.
 
 | Application | Sync policy | State | Stage | Expected |
 |---|---|---|---|---|

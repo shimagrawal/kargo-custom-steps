@@ -93,23 +93,23 @@ Every step and demo needs:
 
   | Name in Kargo (agent and shard) | Cluster | Needed for |
   |---|---|---|
-  | `custom-steps` | Where the promotion pods run, so every custom step runs here | Everything |
+  | `self-hosted` | Where the promotion pods run, so every custom step runs here | Everything |
 
   * The agent must run the full set of controllers for its shard: Warehouses (Freight discovery), Stages and Promotions.
-  * Every demo Stage and Warehouse is pinned to the shard `custom-steps`. To use another one, run `make set-shard SHARD=<name>`.
+  * Every demo Stage and Warehouse is pinned to the shard `self-hosted`. To use another one, run `make set-shard SHARD=<name>`.
 * **Argo CD with these clusters registered** under these names. Argo CD is the only way anything here reaches a
   cluster: everything is GitOps, and nobody needs `kubectl` or access to the Kargo control plane.
 
   | Name in Argo CD | Cluster | Argo CD deploys there | Needed for |
   |---|---|---|---|
-  | `kargo1` | The Kargo control plane | The custom steps and every demo project (`argocd/apps/kargo-custom-steps.yaml`) | Everything |
-  | `custom-steps-agent` | Where the `custom-steps` Kargo agent runs (promotion pods run here) | The demo Postgres, and the two sample apps `argocd-drift-check` inspects | The `data` and `release-insight` demos |
+  | `kargo-resources` | The Kargo control plane | The custom steps and every demo project (`argocd/apps/kargo-custom-steps.yaml`) | Everything |
+  | `kargo-quickstart` | Where the `self-hosted` Kargo agent runs (promotion pods run here) | The demo Postgres, and the two sample apps `argocd-drift-check` inspects | The `data` and `release-insight` demos |
   | `in-cluster` | Argo CD itself | The root app-of-apps and the two sample Applications | Setup, and the `release-insight` demo |
 
   * Different names? Run `scripts/fork.sh --argocd-cluster <kargo name> --agent-cluster <agent name>` ([Forking](#forking)).
   * On the Akuity Platform, enable **Declarative Management** on the Argo CD instance, so `in-cluster` is available and
     apps can create other apps.
-  * For `argocd-drift-check`, this must be the Argo CD integrated with the `custom-steps` Kargo agent: the step reads
+  * For `argocd-drift-check`, this must be the Argo CD integrated with the `self-hosted` Kargo agent: the step reads
     Applications through that integration.
 * Network egress from the agent cluster to `ghcr.io` (step images) and `github.com` (the demos clone this repository).
   Some steps reach more hosts, such as `mirror.gcr.io` (falling back to `ghcr.io`) for Trivy's vulnerability DBs and Sigstore for cosign and slsa-verifier.
@@ -127,15 +127,15 @@ To run everything as-is, point Argo CD at this repository. To customize anything
 which prerequisites deploy), **fork it first**: Argo CD syncs from git, so changes only take effect in your fork.
 [Forking](#forking) covers `scripts/fork.sh`, which points every app at your fork.
 
-1. **Check the clusters in Argo CD.** `kargo1` and `custom-steps-agent` must be registered, and `in-cluster` available
+1. **Check the clusters in Argo CD.** `kargo-resources` and `kargo-quickstart` must be registered, and `in-cluster` available
    (see [Prerequisites](#prerequisites)). If your names differ, fork and run `scripts/fork.sh` with them first.
 2. **Create the root app in the Argo CD UI:** + New App → Edit as YAML → paste [argocd/root.yaml](argocd/root.yaml) →
    Create. It syncs every app in [argocd/apps/](argocd/apps):
 
    | App | Syncs | To |
    |---|---|---|
-   | `kargo-custom-steps` | every custom step and every group's demo project (`custom-steps-<group>`) from `kargo/` | `kargo1` |
-   | `kargo-custom-steps-prereq-postgres` | the demo Postgres for `flyway-migrate` ([prereqs/flyway-migrate](prereqs/flyway-migrate)) | `custom-steps-agent` |
+   | `kargo-custom-steps` | every custom step and every group's demo project (`custom-steps-<group>`) from `kargo/` | `kargo-resources` |
+   | `kargo-custom-steps-prereq-postgres` | the demo Postgres for `flyway-migrate` ([prereqs/flyway-migrate](prereqs/flyway-migrate)) | `kargo-quickstart` |
    | `kargo-custom-steps-prereq-drift-apps` | the two sample apps `argocd-drift-check` inspects ([prereqs/argocd-drift-check](prereqs/argocd-drift-check)) | `in-cluster` (Argo CD itself) |
 
    To run only some demos, see [Choosing which demos to run](#choosing-which-demos-to-run). To skip a prerequisite,
@@ -195,7 +195,7 @@ demo Stages, and an **Example output** section with the real output of a passing
 | [Rendering](kargo/custom-steps/rendering) | Render manifests with tools Kargo doesn't ship, into the workdir for later steps | [`jsonnet-render`](kargo/custom-steps/rendering/jsonnet-render/README.md) | [`custom-steps-rendering`](kargo/projects/rendering) |
 
 To use the steps without the demos, download `kargo-custom-steps.yaml` from a
-[release](https://github.com/34fathombelow/kargo-custom-steps/releases) (every step in one file) and add it, or just the
+[release](https://github.com/shimagrawal/kargo-custom-steps/releases) (every step in one file) and add it, or just the
 steps you want, to the git repository that Argo CD syncs into your Kargo control plane.
 
 ## Build your own and contributing

@@ -9,8 +9,8 @@ Beyond the [common prerequisites](../../../../README.md#prerequisites):
 
 | | |
 |---|---|
-| Cluster add-ons | **A database the step's image has a driver for:** PostgreSQL, MySQL/MariaDB, SQL Server, Oracle, SQLite, H2, HSQLDB or Firebird. Snowflake, Databricks, Cassandra, Couchbase, MongoDB, SingleStore, BigQuery and Spanner are left out to keep the image small ([add one](../../../../docker/flyway/README.md#supported-databases)). The demo uses a Postgres that Argo CD deploys to cluster `custom-steps-agent`: [`prereqs/flyway-migrate`](../../../../prereqs/flyway-migrate)) |
-| Reachable services | The database, **from the `custom-steps` agent cluster** where promotion pods run |
+| Cluster add-ons | **A database the step's image has a driver for:** PostgreSQL, MySQL/MariaDB, SQL Server, Oracle, SQLite, H2, HSQLDB or Firebird. Snowflake, Databricks, Cassandra, Couchbase, MongoDB, SingleStore, BigQuery and Spanner are left out to keep the image small ([add one](../../../../docker/flyway/README.md#supported-databases)). The demo uses a Postgres that Argo CD deploys to cluster `kargo-quickstart`: [`prereqs/flyway-migrate`](../../../../prereqs/flyway-migrate)) |
+| Reachable services | The database, **from the `self-hosted` agent cluster** where promotion pods run |
 | Accounts / credentials | A database user that can create tables. The demo reads it from the `flyway-db` Secret: [`secrets/README.md`](../../../../secrets/README.md#flyway-db-the-data-group) |
 | Kargo capabilities | None |
 | Network egress | None beyond the database |
@@ -50,7 +50,7 @@ RUN cd /flyway/drivers && \
           flyway-singlestore-*.jar flyway-gcp-bigquery-*.jar flyway-gcp-spanner-*.jar flyway-locations-s3-*.jar
 
 FROM alpine:${ALPINE_VERSION}
-LABEL org.opencontainers.image.source=https://github.com/34fathombelow/kargo-custom-steps \
+LABEL org.opencontainers.image.source=https://github.com/shimagrawal/kargo-custom-steps \
       org.opencontainers.image.description="Flyway for the Kargo flyway-migrate custom step"
 RUN apk add --no-cache bash ca-certificates jq
 COPY --from=flyway /opt/java/openjdk /opt/java/openjdk

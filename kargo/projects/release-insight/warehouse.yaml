@@ -6,9 +6,9 @@ metadata:
   name: guestbook
   namespace: custom-steps-release-insight
   labels:
-    kargo.akuity.io/shard: custom-steps
+    kargo.akuity.io/shard: self-hosted
 spec:
-  shard: custom-steps
+  shard: self-hosted
   interval: 5m0s
   subscriptions:
   - image:
@@ -26,9 +26,9 @@ metadata:
   name: guestbook-source
   namespace: custom-steps-release-insight
   labels:
-    kargo.akuity.io/shard: custom-steps
+    kargo.akuity.io/shard: self-hosted
 spec:
-  shard: custom-steps
+  shard: self-hosted
   interval: 5m0s
   subscriptions:
   - git:

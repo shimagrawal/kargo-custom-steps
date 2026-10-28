@@ -34,7 +34,7 @@ ARG ALPINE_VERSION=3.24.2
 FROM ghcr.io/sigstore/cosign/cosign:${COSIGN_VERSION} AS cosign
 
 FROM alpine:${ALPINE_VERSION}
-LABEL org.opencontainers.image.source=https://github.com/34fathombelow/kargo-custom-steps \
+LABEL org.opencontainers.image.source=https://github.com/shimagrawal/kargo-custom-steps \
       org.opencontainers.image.description="cosign for the Kargo cosign-verify custom step"
 # openssl reads signer identities (SAN, OIDC issuer) from the signature certificates.
 RUN apk add --no-cache bash ca-certificates jq openssl

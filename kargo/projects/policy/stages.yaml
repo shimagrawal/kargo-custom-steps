@@ -12,11 +12,11 @@ metadata:
   name: kyverno-apply-pass
   namespace: custom-steps-policy
   labels:
-    kargo.akuity.io/shard: custom-steps
+    kargo.akuity.io/shard: self-hosted
   annotations:
     kargo.akuity.io/color: green
 spec:
-  shard: custom-steps
+  shard: self-hosted
   requestedFreight:
   - origin:
       kind: Warehouse
@@ -38,11 +38,11 @@ metadata:
   name: kyverno-apply-blocked
   namespace: custom-steps-policy
   labels:
-    kargo.akuity.io/shard: custom-steps
+    kargo.akuity.io/shard: self-hosted
   annotations:
     kargo.akuity.io/color: red
 spec:
-  shard: custom-steps
+  shard: self-hosted
   requestedFreight:
   - origin:
       kind: Warehouse
@@ -64,11 +64,11 @@ metadata:
   name: opa-conftest-pass
   namespace: custom-steps-policy
   labels:
-    kargo.akuity.io/shard: custom-steps
+    kargo.akuity.io/shard: self-hosted
   annotations:
     kargo.akuity.io/color: green
 spec:
-  shard: custom-steps
+  shard: self-hosted
   requestedFreight:
   - origin:
       kind: Warehouse
@@ -90,11 +90,11 @@ metadata:
   name: opa-conftest-blocked
   namespace: custom-steps-policy
   labels:
-    kargo.akuity.io/shard: custom-steps
+    kargo.akuity.io/shard: self-hosted
   annotations:
     kargo.akuity.io/color: red
 spec:
-  shard: custom-steps
+  shard: self-hosted
   requestedFreight:
   - origin:
       kind: Warehouse
@@ -116,11 +116,11 @@ metadata:
   name: opa-promotion-gate-allowed
   namespace: custom-steps-policy
   labels:
-    kargo.akuity.io/shard: custom-steps
+    kargo.akuity.io/shard: self-hosted
   annotations:
     kargo.akuity.io/color: green
 spec:
-  shard: custom-steps
+  shard: self-hosted
   requestedFreight:
   - origin:
       kind: Warehouse
@@ -142,11 +142,11 @@ metadata:
   name: opa-promotion-gate-denied
   namespace: custom-steps-policy
   labels:
-    kargo.akuity.io/shard: custom-steps
+    kargo.akuity.io/shard: self-hosted
   annotations:
     kargo.akuity.io/color: red
 spec:
-  shard: custom-steps
+  shard: self-hosted
   requestedFreight:
   - origin:
       kind: Warehouse

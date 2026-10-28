@@ -7,7 +7,7 @@
 #
 # Argo CD's application controller publishes every cluster it manages as a
 # Prometheus metric, unauthenticated:
-#   argocd_cluster_info{k8s_version="v1.35.5",name="custom-steps-agent",server="..."} 1
+#   argocd_cluster_info{k8s_version="v1.35.5",name="kargo-quickstart",server="..."} 1
 # The step reads it from the argocd-metrics Service. By default it uses the short
 # name, which resolves in the promotion pod's own namespace, so it REQUIRES the
 # Argo CD agent to run in the same namespace (and cluster) as the Kargo agent's

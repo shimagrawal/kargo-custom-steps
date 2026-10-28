@@ -1,4 +1,4 @@
-module github.com/34fathombelow/kargo-custom-steps/test
+module github.com/shimagrawal/kargo-custom-steps/test
 
 go 1.27.0
 

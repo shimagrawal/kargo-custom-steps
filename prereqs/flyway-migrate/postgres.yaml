@@ -1,5 +1,5 @@
 # Throwaway Postgres for the flyway-migrate demo, on the cluster the promotion
-# pods run on (the custom-steps shard's agent cluster). Synced by
+# pods run on (the self-hosted shard's agent cluster). Synced by
 # argocd/apps/prereqs-flyway-migrate.yaml.
 # NOT for production: no persistence (emptyDir) and a demo password.
 apiVersion: v1

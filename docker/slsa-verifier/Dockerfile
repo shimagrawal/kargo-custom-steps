@@ -13,7 +13,7 @@ RUN CGO_ENABLED=0 go install -trimpath -ldflags='-s -w' \
       github.com/slsa-framework/slsa-verifier/v2/cli/slsa-verifier@${SLSA_VERIFIER_VERSION}
 
 FROM alpine:${ALPINE_VERSION}
-LABEL org.opencontainers.image.source=https://github.com/34fathombelow/kargo-custom-steps \
+LABEL org.opencontainers.image.source=https://github.com/shimagrawal/kargo-custom-steps \
       org.opencontainers.image.description="slsa-verifier for the Kargo slsa-verify custom step"
 RUN apk add --no-cache bash ca-certificates jq
 COPY --from=build /go/bin/slsa-verifier /usr/local/bin/slsa-verifier

@@ -1,7 +1,7 @@
 # Demo prerequisite for the data group: a single-replica Postgres on the agent
-# cluster that serves the custom-steps shard (where promotion pods run), so the
+# cluster that serves the self-hosted shard (where promotion pods run), so the
 # flyway-migrate step can reach it. Registered in Argo CD as cluster
-# "custom-steps-agent" (scripts/fork.sh --agent-cluster changes the name).
+# "kargo-quickstart" (scripts/fork.sh --agent-cluster changes the name).
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -10,11 +10,11 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/34fathombelow/kargo-custom-steps.git
+    repoURL: https://github.com/shimagrawal/kargo-custom-steps.git
     targetRevision: HEAD
     path: prereqs/flyway-migrate
   destination:
-    name: custom-steps-agent
+    name: kargo-quickstart
   syncPolicy:
     automated:
       prune: true

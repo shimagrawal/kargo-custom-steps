@@ -34,7 +34,7 @@ ARG ALPINE_VERSION=3.24.2
 FROM openpolicyagent/opa:${OPA_VERSION}-static AS opa
 
 FROM alpine:${ALPINE_VERSION}
-LABEL org.opencontainers.image.source=https://github.com/34fathombelow/kargo-custom-steps \
+LABEL org.opencontainers.image.source=https://github.com/shimagrawal/kargo-custom-steps \
       org.opencontainers.image.description="OPA for the Kargo opa-promotion-gate custom step"
 RUN apk add --no-cache bash ca-certificates coreutils jq
 COPY --from=opa /opa /usr/local/bin/opa

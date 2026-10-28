@@ -25,7 +25,7 @@ RUN cd /flyway/drivers && \
           flyway-singlestore-*.jar flyway-gcp-bigquery-*.jar flyway-gcp-spanner-*.jar flyway-locations-s3-*.jar
 
 FROM alpine:${ALPINE_VERSION}
-LABEL org.opencontainers.image.source=https://github.com/34fathombelow/kargo-custom-steps \
+LABEL org.opencontainers.image.source=https://github.com/shimagrawal/kargo-custom-steps \
       org.opencontainers.image.description="Flyway for the Kargo flyway-migrate custom step"
 RUN apk add --no-cache bash ca-certificates jq
 COPY --from=flyway /opt/java/openjdk /opt/java/openjdk

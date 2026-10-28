@@ -11,7 +11,7 @@ FROM mikefarah/yq:${YQ_VERSION} AS yq
 
 FROM alpine:${ALPINE_VERSION}
 ARG TOOLBOX_VERSION
-LABEL org.opencontainers.image.source=https://github.com/34fathombelow/kargo-custom-steps \
+LABEL org.opencontainers.image.source=https://github.com/shimagrawal/kargo-custom-steps \
       org.opencontainers.image.description="Kargo custom step toolbox: bash, jq, yq, curl, git" \
       org.opencontainers.image.version=${TOOLBOX_VERSION}
 RUN apk add --no-cache bash ca-certificates coreutils curl git jq

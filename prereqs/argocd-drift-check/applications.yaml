@@ -1,6 +1,6 @@
 # Two Argo CD Applications for the argocd-drift-check demo, synced into Argo CD
 # by argocd/apps/prereqs-argocd-drift-check.yaml. They deploy to the agent
-# cluster ("custom-steps-agent" in Argo CD).
+# cluster ("kargo-quickstart" in Argo CD).
 #
 #   drift-demo-clean     automated sync + self-heal: stays Synced/Healthy -> the Stage passes
 #   drift-demo-unsynced  no automated sync, never synced: OutOfSync       -> the Stage is blocked
@@ -18,7 +18,7 @@ spec:
     targetRevision: HEAD
     path: guestbook
   destination:
-    name: custom-steps-agent
+    name: kargo-quickstart
     namespace: drift-demo-clean
   syncPolicy:
     automated:
@@ -39,7 +39,7 @@ spec:
     targetRevision: HEAD
     path: guestbook
   destination:
-    name: custom-steps-agent
+    name: kargo-quickstart
     namespace: drift-demo-unsynced
   # Deliberately no automated sync: the app stays OutOfSync until someone syncs it.
   syncPolicy:

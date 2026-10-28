@@ -16,9 +16,11 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/34fathombelow/kargo-custom-steps.git
+    repoURL: https://github.com/shimagrawal/kargo-custom-steps.git
     targetRevision: HEAD
     path: argocd/apps
+    directory:
+      exclude: 'prereqs-*.yaml'
   destination:
     name: in-cluster
     namespace: argocd

@@ -16,11 +16,11 @@ metadata:
   name: trivy-image-pass
   namespace: custom-steps-supply-chain
   labels:
-    kargo.akuity.io/shard: custom-steps
+    kargo.akuity.io/shard: self-hosted
   annotations:
     kargo.akuity.io/color: green
 spec:
-  shard: custom-steps
+  shard: self-hosted
   requestedFreight:
   - origin:
       kind: Warehouse
@@ -42,11 +42,11 @@ metadata:
   name: trivy-image-blocked
   namespace: custom-steps-supply-chain
   labels:
-    kargo.akuity.io/shard: custom-steps
+    kargo.akuity.io/shard: self-hosted
   annotations:
     kargo.akuity.io/color: red
 spec:
-  shard: custom-steps
+  shard: self-hosted
   requestedFreight:
   - origin:
       kind: Warehouse
@@ -68,11 +68,11 @@ metadata:
   name: cosign-verify-pass
   namespace: custom-steps-supply-chain
   labels:
-    kargo.akuity.io/shard: custom-steps
+    kargo.akuity.io/shard: self-hosted
   annotations:
     kargo.akuity.io/color: green
 spec:
-  shard: custom-steps
+  shard: self-hosted
   requestedFreight:
   - origin:
       kind: Warehouse
@@ -98,11 +98,11 @@ metadata:
   name: cosign-verify-blocked
   namespace: custom-steps-supply-chain
   labels:
-    kargo.akuity.io/shard: custom-steps
+    kargo.akuity.io/shard: self-hosted
   annotations:
     kargo.akuity.io/color: red
 spec:
-  shard: custom-steps
+  shard: self-hosted
   requestedFreight:
   - origin:
       kind: Warehouse
@@ -128,11 +128,11 @@ metadata:
   name: slsa-verify-pass
   namespace: custom-steps-supply-chain
   labels:
-    kargo.akuity.io/shard: custom-steps
+    kargo.akuity.io/shard: self-hosted
   annotations:
     kargo.akuity.io/color: green
 spec:
-  shard: custom-steps
+  shard: self-hosted
   requestedFreight:
   - origin:
       kind: Warehouse
@@ -156,11 +156,11 @@ metadata:
   name: slsa-verify-blocked
   namespace: custom-steps-supply-chain
   labels:
-    kargo.akuity.io/shard: custom-steps
+    kargo.akuity.io/shard: self-hosted
   annotations:
     kargo.akuity.io/color: red
 spec:
-  shard: custom-steps
+  shard: self-hosted
   requestedFreight:
   - origin:
       kind: Warehouse

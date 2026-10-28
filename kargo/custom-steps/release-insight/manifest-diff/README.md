@@ -37,7 +37,7 @@ ARG DYFF_VERSION
 RUN CGO_ENABLED=0 go install -trimpath -ldflags='-s -w' github.com/homeport/dyff/cmd/dyff@${DYFF_VERSION}
 
 FROM alpine:${ALPINE_VERSION}
-LABEL org.opencontainers.image.source=https://github.com/34fathombelow/kargo-custom-steps \
+LABEL org.opencontainers.image.source=https://github.com/shimagrawal/kargo-custom-steps \
       org.opencontainers.image.description="dyff for the Kargo manifest-diff custom step"
 RUN apk add --no-cache bash ca-certificates jq
 COPY --from=build /go/bin/dyff /usr/local/bin/dyff

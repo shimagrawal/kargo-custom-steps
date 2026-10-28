@@ -7,7 +7,7 @@
 ARG TRIVY_VERSION=0.76.0
 
 FROM aquasec/trivy:${TRIVY_VERSION}
-LABEL org.opencontainers.image.source=https://github.com/34fathombelow/kargo-custom-steps \
+LABEL org.opencontainers.image.source=https://github.com/shimagrawal/kargo-custom-steps \
       org.opencontainers.image.description="Trivy for the Kargo trivy-image custom step"
 RUN apk add --no-cache bash jq
 ENV TRIVY_CACHE_DIR=/tmp/trivy-cache \

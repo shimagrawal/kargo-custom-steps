@@ -125,7 +125,7 @@ Learned the hard way while building these steps:
   workloads. Argo CD applies every YAML file under `kargo/`.
 - **Stages** are named `<step>-<outcome>` (e.g. `trivy-image-pass`, `trivy-image-blocked`) with a
   `kargo.akuity.io/color` of green (should pass) or red (should be blocked). Every Stage and Warehouse sets
-  `spec.shard: custom-steps` and the label `kargo.akuity.io/shard: custom-steps`.
+  `spec.shard: self-hosted` and the label `kargo.akuity.io/shard: self-hosted`.
 - **Images:** a thin layer `FROM` a pinned upstream image, `ARG <TOOL>_VERSION=<version>` with a `# renovate:` comment,
   the OCI `source` and `description` labels, and `USER 65532:65532`. Published by GitHub Actions as
   `ghcr.io/34fathombelow/<tool>:<version>`; the step's tag must match the `ARG`. Never reference upstream images in a step.
@@ -138,8 +138,8 @@ Learned the hard way while building these steps:
 - **Generated README sections**, never edited by hand: "Image" (`make step-images`) and "Example output"
   (`scripts/example-outputs.sh`, which needs the step in its `runs` map). `make lint` fails when either is missing or
   stale.
-- **Argo CD cluster names:** `kargo1` (Kargo control plane), `custom-steps-agent` (the cluster where the Kargo agent
-  `custom-steps` runs and promotion pods run), and `in-cluster` (Argo CD itself). `scripts/fork.sh` rewrites them, the
+- **Argo CD cluster names:** `kargo-resources` (Kargo control plane), `kargo-quickstart` (the cluster where the Kargo agent
+  `self-hosted` runs and promotion pods run), and `in-cluster` (Argo CD itself). `scripts/fork.sh` rewrites them, the
   repo URL, the image registry and the shard; don't hard-code a new owner-specific value anywhere it can't find.
 - CONTRIBUTING.md's **More custom steps to build** table lists ideas. Move a step out when it's built; add new ideas there.
 - `.github/workflows/README.md` explains every workflow; update it with any workflow change.

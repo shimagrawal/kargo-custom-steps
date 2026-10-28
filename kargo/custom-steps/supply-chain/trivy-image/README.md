@@ -13,7 +13,7 @@ Beyond the [common prerequisites](../../../../README.md#prerequisites):
 | Reachable services | None |
 | Accounts / credentials | Registry credentials only for private images (`username` / `password`) |
 | Kargo capabilities | None |
-| Network egress | **`mirror.gcr.io`**, with **`ghcr.io`** as a fallback, from the `custom-steps` agent cluster: every scan downloads Trivy's current vulnerability DB (about 130 MiB), and the Java DB (about 940 MiB) only for images that contain Java artifacts. Also the registry of the image being scanned |
+| Network egress | **`mirror.gcr.io`**, with **`ghcr.io`** as a fallback, from the `self-hosted` agent cluster: every scan downloads Trivy's current vulnerability DB (about 130 MiB), and the Java DB (about 940 MiB) only for images that contain Java artifacts. Also the registry of the image being scanned |
 | Inputs | If you use `ignorefile`: the file, checked out by an earlier `git-clone` step |
 
 Nothing is cached between promotions (each runs in a fresh pod), so every scan pays those downloads: a few seconds for
@@ -36,7 +36,7 @@ GitHub Actions:
 ARG TRIVY_VERSION=0.76.0
 
 FROM aquasec/trivy:${TRIVY_VERSION}
-LABEL org.opencontainers.image.source=https://github.com/34fathombelow/kargo-custom-steps \
+LABEL org.opencontainers.image.source=https://github.com/shimagrawal/kargo-custom-steps \
       org.opencontainers.image.description="Trivy for the Kargo trivy-image custom step"
 RUN apk add --no-cache bash jq
 ENV TRIVY_CACHE_DIR=/tmp/trivy-cache \

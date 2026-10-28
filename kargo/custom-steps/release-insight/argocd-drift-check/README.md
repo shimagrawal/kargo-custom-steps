@@ -13,7 +13,7 @@ Beyond the [common prerequisites](../../../../README.md#prerequisites):
 
 | | |
 |---|---|
-| Cluster add-ons | **Argo CD**, managing the Application to check, and integrated with the Kargo agent that runs the `custom-steps` shard |
+| Cluster add-ons | **Argo CD**, managing the Application to check, and integrated with the Kargo agent that runs the `self-hosted` shard |
 | Reachable services | The Kubernetes API of the Argo CD cluster (provided through the capability) |
 | Accounts / credentials | None: Kargo provisions them |
 | Kargo capabilities | **`access-argocd`** (declared by the step). Kargo provides credentials for the `kargo-promotion-argocd` ServiceAccount, which can read Applications |
@@ -43,7 +43,7 @@ FROM mikefarah/yq:${YQ_VERSION} AS yq
 
 FROM alpine:${ALPINE_VERSION}
 ARG TOOLBOX_VERSION
-LABEL org.opencontainers.image.source=https://github.com/34fathombelow/kargo-custom-steps \
+LABEL org.opencontainers.image.source=https://github.com/shimagrawal/kargo-custom-steps \
       org.opencontainers.image.description="Kargo custom step toolbox: bash, jq, yq, curl, git" \
       org.opencontainers.image.version=${TOOLBOX_VERSION}
 RUN apk add --no-cache bash ca-certificates coreutils curl git jq

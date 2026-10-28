@@ -15,11 +15,11 @@ metadata:
   name: manifest-diff-changes
   namespace: custom-steps-release-insight
   labels:
-    kargo.akuity.io/shard: custom-steps
+    kargo.akuity.io/shard: self-hosted
   annotations:
     kargo.akuity.io/color: green
 spec:
-  shard: custom-steps
+  shard: self-hosted
   requestedFreight:
   - origin:
       kind: Warehouse
@@ -38,11 +38,11 @@ metadata:
   name: release-diff-dev
   namespace: custom-steps-release-insight
   labels:
-    kargo.akuity.io/shard: custom-steps
+    kargo.akuity.io/shard: self-hosted
   annotations:
     kargo.akuity.io/color: green
 spec:
-  shard: custom-steps
+  shard: self-hosted
   requestedFreight:
   - origin:
       kind: Warehouse
@@ -61,11 +61,11 @@ metadata:
   name: release-diff-staging
   namespace: custom-steps-release-insight
   labels:
-    kargo.akuity.io/shard: custom-steps
+    kargo.akuity.io/shard: self-hosted
   annotations:
     kargo.akuity.io/color: green
 spec:
-  shard: custom-steps
+  shard: self-hosted
   requestedFreight:
   - origin:
       kind: Warehouse
@@ -85,11 +85,11 @@ metadata:
   name: argocd-drift-check-pass
   namespace: custom-steps-release-insight
   labels:
-    kargo.akuity.io/shard: custom-steps
+    kargo.akuity.io/shard: self-hosted
   annotations:
     kargo.akuity.io/color: green
 spec:
-  shard: custom-steps
+  shard: self-hosted
   requestedFreight:
   - origin:
       kind: Warehouse
@@ -111,11 +111,11 @@ metadata:
   name: argocd-drift-check-blocked
   namespace: custom-steps-release-insight
   labels:
-    kargo.akuity.io/shard: custom-steps
+    kargo.akuity.io/shard: self-hosted
   annotations:
     kargo.akuity.io/color: red
 spec:
-  shard: custom-steps
+  shard: self-hosted
   requestedFreight:
   - origin:
       kind: Warehouse

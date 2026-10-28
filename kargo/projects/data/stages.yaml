@@ -18,11 +18,11 @@ metadata:
   name: flyway-migrate-apply
   namespace: custom-steps-data
   labels:
-    kargo.akuity.io/shard: custom-steps
+    kargo.akuity.io/shard: self-hosted
   annotations:
     kargo.akuity.io/color: green
 spec:
-  shard: custom-steps
+  shard: self-hosted
   requestedFreight:
   - origin:
       kind: Warehouse
@@ -41,11 +41,11 @@ metadata:
   name: flyway-migrate-rollback
   namespace: custom-steps-data
   labels:
-    kargo.akuity.io/shard: custom-steps
+    kargo.akuity.io/shard: self-hosted
   annotations:
     kargo.akuity.io/color: yellow
 spec:
-  shard: custom-steps
+  shard: self-hosted
   requestedFreight:
   - origin:
       kind: Warehouse

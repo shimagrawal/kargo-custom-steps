@@ -97,7 +97,7 @@ spec:
       msg="$(jq -r '.error.message // empty' "/tmp/$op.json" 2>/dev/null | head -1 || true)"
       case "$state" in
         28P01|28000) fail "authentication failed for user '$user' (check the flyway-db Secret)" ;;
-        08*) fail "cannot reach $host: is prereqs/flyway-migrate deployed and reachable from the custom-steps agent cluster?" ;;
+        08*) fail "cannot reach $host: is prereqs/flyway-migrate deployed and reachable from the self-hosted agent cluster?" ;;
       esac
       case "$msg" in
         *"No Flyway database plugin found"*)

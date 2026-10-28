@@ -8,7 +8,7 @@ The version comes from Argo CD. Its application controller already tracks every 
 each one as a Prometheus metric on the `argocd-metrics` Service, with no authentication:
 
 ```text
-argocd_cluster_info{k8s_version="v1.35.5",name="custom-steps-agent",server="http://cluster-custom-steps-agent:8001"} 1
+argocd_cluster_info{k8s_version="v1.35.5",name="kargo-quickstart",server="http://cluster-custom-steps-agent:8001"} 1
 ```
 
 The step reads that metric. It needs no capability, token or CA. (Asking the cluster's API server directly doesn't work
@@ -25,7 +25,7 @@ Beyond the [common prerequisites](../../../../README.md#prerequisites):
 
 | | |
 |---|---|
-| Cluster add-ons | **An Argo CD agent in the same namespace as the `custom-steps` Kargo agent's promotion controller**, on the agent cluster where promotion pods run. It reports the cluster it manages |
+| Cluster add-ons | **An Argo CD agent in the same namespace as the `self-hosted` Kargo agent's promotion controller**, on the agent cluster where promotion pods run. It reports the cluster it manages |
 | Reachable services | Argo CD's `argocd-metrics` Service, port 8082. Akuity's network policy for the application controller allows it from any namespace |
 | Accounts / credentials | None |
 | Kargo capabilities | None |
@@ -52,7 +52,7 @@ FROM mikefarah/yq:${YQ_VERSION} AS yq
 
 FROM alpine:${ALPINE_VERSION}
 ARG TOOLBOX_VERSION
-LABEL org.opencontainers.image.source=https://github.com/34fathombelow/kargo-custom-steps \
+LABEL org.opencontainers.image.source=https://github.com/shimagrawal/kargo-custom-steps \
       org.opencontainers.image.description="Kargo custom step toolbox: bash, jq, yq, curl, git" \
       org.opencontainers.image.version=${TOOLBOX_VERSION}
 RUN apk add --no-cache bash ca-certificates coreutils curl git jq

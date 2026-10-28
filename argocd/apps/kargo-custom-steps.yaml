@@ -1,6 +1,6 @@
 # Syncs everything under kargo/ (the custom steps and every group's demo
 # project) into the Kargo control plane, registered in Argo CD as a cluster
-# named "kargo1". Created by argocd/root.yaml.
+# named "kargo-resources". Created by argocd/root.yaml.
 #
 # Which demos get synced (see README "Choosing which demos to run"):
 #   - All of them:     leave `directory` as it is (the default).
@@ -22,13 +22,14 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/34fathombelow/kargo-custom-steps.git
+    repoURL: https://github.com/shimagrawal/kargo-custom-steps.git
     targetRevision: HEAD
     path: kargo
     directory:
+      include: '{custom-steps/supply-chain/*,projects/supply-chain/*}'
       recurse: true
   destination:
-    name: kargo1
+    name: kargo-resources
   syncPolicy:
     automated:
       prune: true

@@ -46,7 +46,7 @@ RUN CGO_ENABLED=0 go install -trimpath -ldflags='-s -w' github.com/google/go-jso
 FROM mikefarah/yq:${YQ_VERSION} AS yq
 
 FROM alpine:${ALPINE_VERSION}
-LABEL org.opencontainers.image.source=https://github.com/34fathombelow/kargo-custom-steps \
+LABEL org.opencontainers.image.source=https://github.com/shimagrawal/kargo-custom-steps \
       org.opencontainers.image.description="jsonnet + jb for the Kargo jsonnet-render custom step"
 RUN apk add --no-cache bash ca-certificates git jq
 COPY --from=build /go/bin/jsonnet /go/bin/jb /usr/local/bin/

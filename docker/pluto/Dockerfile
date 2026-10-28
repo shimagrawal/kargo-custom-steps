@@ -8,7 +8,7 @@ ARG ALPINE_VERSION=3.24.2
 FROM alpine:${ALPINE_VERSION}
 ARG PLUTO_VERSION
 ARG TARGETARCH
-LABEL org.opencontainers.image.source=https://github.com/34fathombelow/kargo-custom-steps \
+LABEL org.opencontainers.image.source=https://github.com/shimagrawal/kargo-custom-steps \
       org.opencontainers.image.description="pluto for the Kargo deprecated-apis custom step"
 RUN apk add --no-cache bash ca-certificates jq && \
     v="${PLUTO_VERSION#v}" && arch="${TARGETARCH:-amd64}" && \
