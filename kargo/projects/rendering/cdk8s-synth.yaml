@@ -1,9 +1,9 @@
-# Renders the demo cdk8s app twice, for staging and for prod, with the
+# Renders the TypeScript demo cdk8s app twice, for staging and for prod, with the
 # cdk8s-synth custom step, then shows what changes between the two renders with
 # the manifest-diff custom step. The app reads ENVIRONMENT from config.env.
 #
-# appPath picks the app: the blocked Stage points it at a copy with a
-# TypeScript error, so the first render fails and blocks the promotion.
+# appPath picks the app: the blocked Stage points it at a copy with a type
+# error, so the first render fails and blocks the promotion.
 apiVersion: kargo.akuity.io/v1alpha1
 kind: PromotionTask
 metadata:
