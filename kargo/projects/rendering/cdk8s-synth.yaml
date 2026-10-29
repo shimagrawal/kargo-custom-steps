@@ -23,21 +23,21 @@ spec:
       - branch: main
         path: ./src
   - uses: cdk8s-synth
-    as: render-current
+    as: render-staging
     config:
       path: ${{ vars.appPath }}
-      outPath: ./out/current
+      outPath: ./out/staging
       env:
         ENVIRONMENT: staging
   - uses: cdk8s-synth
-    as: render-new
+    as: render-prod
     config:
       path: ${{ vars.appPath }}
-      outPath: ./out/new
+      outPath: ./out/prod
       env:
         ENVIRONMENT: prod
   - uses: manifest-diff
     as: diff
     config:
-      from: ./out/current
-      to: ./out/new
+      from: ./out/staging
+      to: ./out/prod

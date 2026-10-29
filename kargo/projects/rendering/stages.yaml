@@ -6,7 +6,7 @@
 #                        for staging and prod -> passes; the `diff` output shows
 #                        replicas 1 -> 3
 #   cdk8s-synth-blocked  the same app with a TypeScript error -> blocked; the
-#                        `render-current` output's `error` names it
+#                        `render-staging` output's `error` names it
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
