@@ -2,6 +2,11 @@
 #   jsonnet-render-pass  jsonnet-render (custom step) renders the guestbook app
 #                        with the Freight's image tag -> passes; see the `render`
 #                        and `rendered` outputs
+#   cdk8s-synth-pass     cdk8s-synth (custom step) renders the guestbook cdk8s app
+#                        for staging and prod -> passes; the `diff` output shows
+#                        replicas 1 -> 3
+#   cdk8s-synth-blocked  the same app with a TypeScript error -> blocked; the
+#                        `render-current` output's `error` names it
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
@@ -24,3 +29,52 @@ spec:
       steps:
       - task:
           name: jsonnet-render
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: cdk8s-synth-pass
+  namespace: custom-steps-rendering
+  labels:
+    kargo.akuity.io/shard: self-hosted
+  annotations:
+    kargo.akuity.io/color: green
+spec:
+  shard: self-hosted
+  requestedFreight:
+  - origin:
+      kind: Warehouse
+      name: guestbook
+    sources:
+      direct: true
+  promotionTemplate:
+    spec:
+      steps:
+      - task:
+          name: cdk8s-synth
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: cdk8s-synth-blocked
+  namespace: custom-steps-rendering
+  labels:
+    kargo.akuity.io/shard: self-hosted
+  annotations:
+    kargo.akuity.io/color: red
+spec:
+  shard: self-hosted
+  requestedFreight:
+  - origin:
+      kind: Warehouse
+      name: guestbook
+    sources:
+      direct: true
+  promotionTemplate:
+    spec:
+      steps:
+      - task:
+          name: cdk8s-synth
+        vars:
+        - name: appPath
+          value: ./src/demo-fixtures/cdk8s-synth/broken
