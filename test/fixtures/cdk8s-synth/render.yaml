@@ -1,4 +1,4 @@
-description: renders the demo app with per-Stage settings from env
+description: renders the TypeScript demo app with per-Stage settings from env
 config:
   path: ./src/typescript
   outPath: ./out
@@ -9,6 +9,7 @@ files:
 expect:
   status: Succeeded
   output:
+    language: typescript
     outPath: ./out
     count: 2
     files: [out/guestbook.k8s.yaml]

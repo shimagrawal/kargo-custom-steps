@@ -3,23 +3,25 @@
 # Synthesizes Kubernetes YAML from a TypeScript cdk8s app in the promotion
 # workdir, the way the built-in helm-template and kustomize-build steps do for
 # Helm and Kustomize. Later steps (a policy gate, manifest-diff, ...) use the
-# rendered files.
+# rendered files. cdk8s-synth, cdk8s-synth-python and cdk8s-synth-go are the
+# same step for TypeScript, Python and Go apps, each with its own image.
 #
 # Config:
-#   path     - workdir-relative app directory containing cdk8s.yaml and
-#              package-lock.json (e.g. ./src/deploy/cdk8s)
+#   path     - workdir-relative app directory containing cdk8s.yaml (language:
+#              typescript) and package-lock.json (e.g. ./src/deploy/cdk8s)
 #   outPath  - workdir-relative directory to write to (one <chart>.k8s.yaml per
 #              chart). Replaced if it exists.
-#   env      - map of environment variables for the app (process.env), e.g.
+#   env      - map of environment variables for the app, e.g.
 #              {ENVIRONMENT: prod}, so one app can render per-Stage settings
 #
-# Output (JSON): outPath, count, files[], resources[{kind, name, namespace}], error
+# Output (JSON): language, outPath, count, files[], resources[{kind, name, namespace}], error
 apiVersion: ee.kargo.akuity.io/v1alpha1
 kind: CustomPromotionStep
 metadata:
   name: cdk8s-synth
 spec:
-  image: ghcr.io/34fathombelow/cdk8s:2.207.73
+  image: ghcr.io/34fathombelow/cdk8s-typescript:2.207.73
+  # npm ci and the TypeScript compile dominate the run time.
   defaultTimeout: 5m
   defaultErrorThreshold: 1
   resources:
@@ -42,17 +44,26 @@ spec:
     set -euo pipefail
     trap 'echo "cdk8s-synth: unexpected error on line $LINENO" >&2' ERR
     out=/tmp/cdk8s-synth.json
+    language=""
     fail() {
       echo "cdk8s-synth: $*" >&2
-      jq -n --arg outPath "$OUT_PATH" --arg error "$*" \
-        '{outPath: $outPath, count: 0, files: [], resources: [], error: $error}' > "$out"
+      jq -n --arg language "$language" --arg outPath "$OUT_PATH" --arg error "$*" \
+        '{language: $language, outPath: $outPath, count: 0, files: [], resources: [], error: $error}' > "$out"
       exit 1
     }
 
     [ -n "$APP_PATH" ] || fail "config.path is required (the cdk8s app directory)"
     [ -d "$APP_PATH" ] || fail "config.path $APP_PATH not found in the workdir (did an earlier git-clone step check it out?)"
     [ -f "$APP_PATH/cdk8s.yaml" ] || fail "$APP_PATH has no cdk8s.yaml; config.path must point at a cdk8s app"
-    [ -f "$APP_PATH/package-lock.json" ] || fail "$APP_PATH has no package-lock.json; commit it so installs are reproducible (npm ci)"
+    language="$(yq -r '.language // ""' "$APP_PATH/cdk8s.yaml" 2>/dev/null)" || fail "$APP_PATH/cdk8s.yaml is not valid YAML"
+    case "$language" in
+      typescript) ;;
+      python) fail "$APP_PATH is a python cdk8s app; use the cdk8s-synth-python step" ;;
+      go) fail "$APP_PATH is a go cdk8s app; use the cdk8s-synth-go step" ;;
+      "") fail "$APP_PATH/cdk8s.yaml has no language" ;;
+      *) fail "language $language (from $APP_PATH/cdk8s.yaml) is not supported; the cdk8s-synth steps support typescript, python and go" ;;
+    esac
+    [ -f "$APP_PATH/package-lock.json" ] || fail "$APP_PATH has no package-lock.json; commit it so installs are reproducible"
     [ -n "$OUT_PATH" ] || fail "config.outPath is required (a directory)"
     case "$OUT_PATH" in
       /*|.|./|..|../*|*/..|*/../*) fail "config.outPath must be a directory inside the workdir, got $OUT_PATH" ;;
@@ -73,8 +84,9 @@ spec:
     cd "$APP_PATH"
     npm ci --no-audit --no-fund >&2 || fail "npm ci failed in $APP_PATH (it needs egress to the npm registry; see the log above)"
     if ! cdk8s synth --output "$out_dir" > /tmp/synth.log 2>&1; then
-      # Show the compiler/app error without Node's stack frames.
+      # Show the error without Node's stack frames.
       grep -vE '^[[:space:]]+at |^[[:space:]]*(return new TSError|\^)' /tmp/synth.log >&2 || true
+      # The first compiler error.
       reason="$(grep -m1 -E 'error TS[0-9]+' /tmp/synth.log || true)"
       [ -n "$reason" ] || reason="$(grep -v '^[[:space:]]*$' /tmp/synth.log | tail -1 || true)"
       fail "cdk8s synth failed in $APP_PATH: ${reason:-see the log above}"
@@ -92,13 +104,14 @@ spec:
     count="$(jq 'length' /tmp/manifests.json)"
     [ "$count" -gt 0 ] || fail "$APP_PATH rendered no Kubernetes objects"
 
-    printf '%s\0' "${files[@]}" | jq -Rs --arg outPath "$OUT_PATH" --slurpfile m /tmp/manifests.json '
-      {outPath: $outPath,
+    printf '%s\0' "${files[@]}" | jq -Rs --arg language "$language" --arg outPath "$OUT_PATH" --slurpfile m /tmp/manifests.json '
+      {language: $language,
+       outPath: $outPath,
        count: ($m[0] | length),
        files: (split("\u0000") | map(select(. != ""))),
        resources: ($m[0] | map({kind, name: .metadata.name, namespace: (.metadata.namespace // "")})),
        error: ""}' > "$out"
-    echo "Rendered $count object(s) from $APP_PATH into $OUT_PATH:"
+    echo "Rendered $count object(s) from the typescript app in $APP_PATH into $OUT_PATH:"
     jq -r '.resources[] | "  \(.kind)/\(.name)"' "$out"
   output:
     source:

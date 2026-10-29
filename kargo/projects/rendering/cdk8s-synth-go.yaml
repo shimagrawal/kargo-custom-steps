@@ -1,0 +1,43 @@
+# Renders the Go demo cdk8s app twice, for staging and for prod, with the
+# cdk8s-synth-go custom step, then shows what changes between the two renders with
+# the manifest-diff custom step. The app reads ENVIRONMENT from config.env.
+#
+# appPath picks the app: the blocked Stage points it at a copy with a type
+# error, so the first render fails and blocks the promotion.
+apiVersion: kargo.akuity.io/v1alpha1
+kind: PromotionTask
+metadata:
+  name: cdk8s-synth-go
+  namespace: custom-steps-rendering
+spec:
+  vars:
+  - name: repoURL
+    value: https://github.com/shimagrawal/kargo-custom-steps.git
+  - name: appPath
+    value: ./src/demo-fixtures/cdk8s-synth/go
+  steps:
+  - uses: git-clone
+    config:
+      repoURL: ${{ vars.repoURL }}
+      checkout:
+      - branch: main
+        path: ./src
+  - uses: cdk8s-synth-go
+    as: render-staging
+    config:
+      path: ${{ vars.appPath }}
+      outPath: ./out/staging
+      env:
+        ENVIRONMENT: staging
+  - uses: cdk8s-synth-go
+    as: render-prod
+    config:
+      path: ${{ vars.appPath }}
+      outPath: ./out/prod
+      env:
+        ENVIRONMENT: prod
+  - uses: manifest-diff
+    as: diff
+    config:
+      from: ./out/staging
+      to: ./out/prod
