@@ -9,18 +9,19 @@ import (
 	"github.com/cdk8s-team/cdk8s-core-go/cdk8s/v2"
 )
 
-// The Kargo cdk8s-synth step passes per-Stage settings as environment variables.
-func environment() string {
-	if env := os.Getenv("ENVIRONMENT"); env != "" {
-		return env
+// The Kargo cdk8s-synth steps pass per-Stage settings as environment variables.
+func getenv(key, fallback string) string {
+	if v := os.Getenv(key); v != "" {
+		return v
 	}
-	return "dev"
+	return fallback
 }
 
 func NewGuestbook(scope constructs.Construct, id string) cdk8s.Chart {
 	chart := cdk8s.NewChart(scope, jsii.String(id), nil)
 
-	env := environment()
+	env := getenv("ENVIRONMENT", "dev")
+	image := getenv("IMAGE", "ghcr.io/akuity/guestbook:v0.0.2")
 	labels := &map[string]*string{"app": jsii.String("guestbook-ui"), "environment": jsii.String(env)}
 	replicas := 1.0
 	if env == "prod" {
@@ -37,7 +38,7 @@ func NewGuestbook(scope constructs.Construct, id string) cdk8s.Chart {
 				Spec: &k8s.PodSpec{
 					Containers: &[]*k8s.Container{{
 						Name:  jsii.String("guestbook-ui"),
-						Image: jsii.String("ghcr.io/akuity/guestbook:v0.0.2"),
+						Image: jsii.String(image),
 						Ports: &[]*k8s.ContainerPort{{ContainerPort: jsii.Number(80)}},
 					}},
 				},

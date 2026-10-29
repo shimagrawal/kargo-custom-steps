@@ -4,6 +4,7 @@ import { KubeDeployment, KubeService, IntOrString } from './imports/k8s';
 
 // The Kargo cdk8s-synth step passes per-Stage settings as environment variables.
 const environment = process.env.ENVIRONMENT ?? 'dev';
+const image = process.env.IMAGE ?? 'ghcr.io/akuity/guestbook:v0.0.2';
 
 export class Guestbook extends Chart {
   constructor(scope: Construct, id: string, props: ChartProps = {}) {
@@ -21,7 +22,7 @@ export class Guestbook extends Chart {
           spec: {
             containers: [{
               name: 'guestbook-ui',
-              image: 'ghcr.io/akuity/guestbook:v0.0.2',
+              image,
               ports: [{ containerPort: 80 }],
             }],
           },

@@ -4,11 +4,12 @@
 #                        and `rendered` outputs
 #   cdk8s-synth-pass, cdk8s-synth-python-pass, cdk8s-synth-go-pass
 #                        cdk8s-synth* (custom steps) render the guestbook cdk8s
-#                        app in TypeScript, Python and Go for staging and prod
-#                        -> passes; the `diff` output shows replicas 1 -> 3
+#                        app in TypeScript, Python and Go with the image the
+#                        Stage runs now and the Freight's image -> passes; promote
+#                        a second Freight and the `diff` output shows the image change
 #   cdk8s-synth-blocked, cdk8s-synth-python-blocked, cdk8s-synth-go-blocked
 #                        the same apps with a type error -> blocked; the
-#                        `render-staging` output's `error` names it
+#                        `render-current` output's `error` names it
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
