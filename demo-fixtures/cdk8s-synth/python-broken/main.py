@@ -8,6 +8,7 @@ from imports import k8s
 
 # The Kargo cdk8s-synth step passes per-Stage settings as environment variables.
 environment = os.environ.get("ENVIRONMENT", "dev")
+image = os.environ.get("IMAGE", "ghcr.io/akuity/guestbook:v0.0.2")
 
 
 class Guestbook(Chart):
@@ -29,7 +30,7 @@ class Guestbook(Chart):
                         containers=[
                             k8s.Container(
                                 name="guestbook-ui",
-                                image="ghcr.io/akuity/guestbook:v0.0.2",
+                                image=image,
                                 ports=[k8s.ContainerPort(container_port=80)],
                             )
                         ]

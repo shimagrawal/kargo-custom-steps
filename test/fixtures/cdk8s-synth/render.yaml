@@ -4,6 +4,7 @@ config:
   outPath: ./out
   env:
     ENVIRONMENT: prod
+    IMAGE: ghcr.io/akuity/guestbook:v0.0.1
 files:
   src: demo-fixtures/cdk8s-synth
 expect:
