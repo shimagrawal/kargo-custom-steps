@@ -1,12 +1,10 @@
-# What a promotion changes in the rendered manifests of the Python demo cdk8s
-# app. The cdk8s-synth-python custom step renders the app twice: with the image this
-# Stage runs now (stored on the Stage with set-metadata, read back with
-# stageMetadata()) and with the Freight's image. The manifest-diff custom step
-# then shows the difference. Both renders use the app code from main, so the
-# diff shows what the Freight changes.
+# Renders the Python demo cdk8s app with the cdk8s-synth-python custom step, with the
+# Freight's guestbook image passed in through config.env, then reads the image
+# and replica count back out of the rendered Deployment to show the files are
+# ordinary YAML that any later step can work with.
 #
 # appPath picks the app: the blocked Stage points it at a copy with a type
-# error, so the first render fails and blocks the promotion.
+# error, so the render fails and blocks the promotion.
 apiVersion: kargo.akuity.io/v1alpha1
 kind: PromotionTask
 metadata:
@@ -27,35 +25,22 @@ spec:
       checkout:
       - branch: main
         path: ./src
-  # What this Stage runs now. On its first promotion nothing is stored yet, so
-  # it renders the Freight's image and the diff is empty.
   - uses: cdk8s-synth-python
-    as: render-current
+    as: render
     config:
       path: ${{ vars.appPath }}
-      outPath: ./out/current
-      env:
-        ENVIRONMENT: prod
-        IMAGE: ${{ stageMetadata(ctx.stage)?.lastImage ?? (vars.image + ":" + imageFrom(vars.image).Tag) }}
-  # What this promotion deploys.
-  - uses: cdk8s-synth-python
-    as: render-new
-    config:
-      path: ${{ vars.appPath }}
-      outPath: ./out/new
+      outPath: ./out
       env:
         ENVIRONMENT: prod
         IMAGE: ${{ vars.image }}:${{ imageFrom(vars.image).Tag }}
-  - uses: manifest-diff
-    as: diff
+  # yaml-parse reads the first document of the chart's file: the Deployment,
+  # which the app creates before the Service.
+  - uses: yaml-parse
+    as: rendered
     config:
-      from: ./out/current
-      to: ./out/new
-  # Remember what this Stage now runs, for the next promotion's diff.
-  - uses: set-metadata
-    config:
-      updates:
-      - kind: Stage
-        name: ${{ ctx.stage }}
-        values:
-          lastImage: ${{ vars.image }}:${{ imageFrom(vars.image).Tag }}
+      path: ./out/guestbook.k8s.yaml
+      outputs:
+      - name: image
+        fromExpression: spec.template.spec.containers[0].image
+      - name: replicas
+        fromExpression: spec.replicas
