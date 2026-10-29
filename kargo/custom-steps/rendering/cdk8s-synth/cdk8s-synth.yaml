@@ -19,7 +19,7 @@ kind: CustomPromotionStep
 metadata:
   name: cdk8s-synth
 spec:
-  image: ghcr.io/34fathombelow/cdk8s:2.207.73
+  image: ghcr.io/shimagrawal/cdk8s:2.207.73
   defaultTimeout: 5m
   defaultErrorThreshold: 1
   resources:
