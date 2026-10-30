@@ -20,7 +20,7 @@ kind: CustomPromotionStep
 metadata:
   name: cdk8s-synth-python
 spec:
-  image: ghcr.io/shimagrawal/cdk8s-python:2.207.73
+  image: ghcr.io/34fathombelow/cdk8s-python:2.207.73
   # uv sync dominates the run time.
   defaultTimeout: 5m
   defaultErrorThreshold: 1

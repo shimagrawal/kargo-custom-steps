@@ -20,7 +20,7 @@ kind: CustomPromotionStep
 metadata:
   name: cdk8s-synth
 spec:
-  image: ghcr.io/shimagrawal/cdk8s-typescript:2.207.73
+  image: ghcr.io/34fathombelow/cdk8s-typescript:2.207.73
   # npm ci and the TypeScript compile dominate the run time.
   defaultTimeout: 5m
   defaultErrorThreshold: 1

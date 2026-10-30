@@ -26,7 +26,7 @@ spec:
     targetRevision: HEAD
     path: kargo
     directory:
-      include: '{custom-steps/supply-chain/*,projects/supply-chain/*,custom-steps/rendering/*,projects/rendering/*,custom-steps/release-insight/manifest-diff/*}'
+      include: '{custom-steps/supply-chain/*,projects/supply-chain/*,custom-steps/rendering/*,projects/rendering/*,custom-steps/release-insight/manifest-diff/*,custom-steps/release-insight/sentry-release/*,projects/release-insight/*}'
       recurse: true
   destination:
     name: kargo-resources

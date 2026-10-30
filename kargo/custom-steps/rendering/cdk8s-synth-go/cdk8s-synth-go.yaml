@@ -20,7 +20,7 @@ kind: CustomPromotionStep
 metadata:
   name: cdk8s-synth-go
 spec:
-  image: ghcr.io/shimagrawal/cdk8s-go:2.207.73
+  image: ghcr.io/34fathombelow/cdk8s-go:2.207.73
   # Downloading modules and compiling dominate the run time.
   defaultTimeout: 10m
   defaultErrorThreshold: 1
