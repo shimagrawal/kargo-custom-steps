@@ -23,7 +23,7 @@ kind: CustomPromotionStep
 metadata:
   name: sbom-generate
 spec:
-  image: ghcr.io/34fathombelow/syft:1.55.0
+  image: ghcr.io/shimagrawal/syft:1.55.0
   defaultTimeout: 5m
   defaultErrorThreshold: 1
   resources:
